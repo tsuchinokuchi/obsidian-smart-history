@@ -102,10 +102,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         return;
       }
 
-      // Update Context for Memos too!
-      // If we auto-save, we establish this page as the current context.
-      const normalizedUrl = getContextUrl(url);
-      await chrome.storage.local.set({ lastMemoUrl: normalizedUrl });
+      // Update Context for Memos too! -> REMOVED to decouple context.
+      // Auto-save uses bullet points, Memos use Headers. We want Memos to start a header if it's the first memo.
 
       // Trigger AI Summary immediately
       try {

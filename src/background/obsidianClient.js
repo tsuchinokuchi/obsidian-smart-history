@@ -139,8 +139,12 @@ export class ObsidianClient {
         // Bullet point memo
         formatted += `- ${timestamp} ${memoContent}\n`;
 
-        // Use appendToNote logic
-        return this.appendToNote(path, formatted);
+        // Use appendToNote logic if path exists, otherwise default to Daily Note
+        if (path) {
+            return this.appendToNote(path, formatted);
+        } else {
+            return this.appendToDailyNote(formatted);
+        }
     }
 
     async getActiveNote() {
