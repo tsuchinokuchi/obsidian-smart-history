@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy - Obsidian Smart History</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        h1 {
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+        h2 {
+            margin-top: 30px;
+            color: #444;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .divider {
+            border-top: 1px solid #eee;
+            margin: 40px 0;
+        }
+
+        .contact-placeholder {
+            color: red;
+            font-weight: bold;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            body {
+                background: #1a1a1a;
+                color: #eee;
+            }
+
+            h1 {
+                border-bottom-color: #444;
+            }
+
+            h2 {
+                color: #ddd;
+            }
+
+            .divider {
+                border-top-color: #333;
+            }
+
+            a {
+                color: #8ab4f8;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="section" lang="en">
+        <h1>Privacy Policy</h1>
+        <p>Last Updated: February 2, 2026</p>
+
+        <h2>1. Overview</h2>
+        <p><strong>Obsidian Smart History</strong> ("we", "our", or "the extension") respects your privacy. This
+            extension is designed to run locally on your device and communicate with specific services only to perform
+            its core functionality. We do not sell your data or collect it for advertising purposes.</p>
+
+        <h2>2. Data Collection and Usage</h2>
+
+        <h3>Browsing Data (Tabs and History)</h3>
+        <p>To provide context-aware summaries and save your browsing history to Obsidian, the extension accesses the
+            title, URL, and content of the tabs you engage with.</p>
+        <ul>
+            <li><strong>Permission used:</strong> <code>tabs</code>, <code>&lt;all_urls&gt;</code></li>
+            <li><strong>How it's used:</strong> This data is accessed <em>only</em> when you trigger a backup or when
+                the extension processes a closed tab (depending on your settings). It is used immediately to generate a
+                summary and is then saved to your local Obsidian vault.</li>
+        </ul>
+
+        <h3>Local Storage</h3>
+        <p>We use your browser's local storage to save your settings (e.g., API keys, template preferences).</p>
+        <ul>
+            <li><strong>Permission used:</strong> <code>storage</code></li>
+            <li><strong>Protection:</strong> This data stays on your machine and is not synced to our servers.</li>
+        </ul>
+
+        <h2>3. Third-Party Services</h2>
+
+        <h3>Google Gemini API</h3>
+        <p>To generate smart summaries of the webpages you visit, the extension sends the text content of those pages to
+            the Google Gemini API.</p>
+        <ul>
+            <li><strong>Data shared:</strong> Page text content.</li>
+            <li><strong>Purpose:</strong> Summarization and keyword extraction.</li>
+            <li><strong>Privacy:</strong> Data sent to the Gemini API is subject to <a
+                    href="https://policies.google.com/privacy" target="_blank">Google's Privacy Policy</a> and the
+                Generative AI Terms of Service.</li>
+        </ul>
+
+        <h2>4. Data Retention</h2>
+        <p>The extension does not maintain a copy of your browsing history on any external servers. The "History" you
+            save is stored directly into your own <strong>Obsidian Vault</strong> application on your computer. You
+            retain full ownership and control of this data.</p>
+
+        <h2>5. Contact</h2>
+        <p>If you have questions about this policy, please contact us at:</p>
+        <p class="contact-placeholder">[cendrillon032.marble@gmail.com]
+            <!-- Please replace this with your email address --></p>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="section" lang="ja">
+        <h1>プライバシーポリシー</h1>
+        <p>最終更新日: 2026年2月2日</p>
+
+        <h2>1. 概要</h2>
+        <p><strong>Obsidian Smart
+                History</strong>（以下「本拡張機能」）は、ユーザーのプライバシーを尊重します。本拡張機能は、ユーザーのデバイス上でローカルに動作し、主要な機能を提供するために必要な特定のサービスとのみ通信するように設計されています。広告目的でデータを収集・販売することはありません。
+        </p>
+
+        <h2>2. データの収集と利用</h2>
+
+        <h3>閲覧データ（タブと履歴）</h3>
+        <p>文脈を考慮した要約を作成し、閲覧履歴をObsidianに保存するために、本拡張機能はユーザーがアクセスしたタブのタイトル、URL、および本文コンテンツにアクセスします。</p>
+        <ul>
+            <li><strong>利用する権限:</strong> <code>tabs</code>, <code>&lt;all_urls&gt;</code></li>
+            <li><strong>利用方法:</strong>
+                このデータは、ユーザーがバックアップ操作を行った際、または閉じたタブを処理する際（設定による）にのみアクセスされます。データは要約生成のために即座に使用され、その後ユーザー自身のローカルObsidian保管庫に保存されます。
+            </li>
+        </ul>
+
+        <h3>ローカルストレージ</h3>
+        <p>設定情報（APIキー、テンプレート設定など）を保存するために、ブラウザのローカルストレージを使用します。</p>
+        <ul>
+            <li><strong>利用する権限:</strong> <code>storage</code></li>
+            <li><strong>保護:</strong> このデータはユーザーのPC内に留まり、開発者のサーバー等に送信されることはありません。</li>
+        </ul>
+
+        <h2>3. 第三者サービス</h2>
+
+        <h3>Google Gemini API</h3>
+        <p>ウェブページのスマートな要約を生成するために、ページ内のテキストデータをGoogle Gemini APIに送信します。</p>
+        <ul>
+            <li><strong>共有されるデータ:</strong> ページのテキストコンテンツ。</li>
+            <li><strong>目的:</strong> 要約およびキーワードの抽出。</li>
+            <li><strong>プライバシー:</strong> Gemini APIに送信されるデータは、<a href="https://policies.google.com/privacy"
+                    target="_blank">Googleのプライバシーポリシー</a>およびGenerative AI利用規約に従って処理されます。</li>
+        </ul>
+
+        <h2>4. データの保存</h2>
+        <p>本拡張機能が外部サーバー上にユーザーの閲覧履歴のコピーを保持することはありません。保存された「履歴」は、お客様のコンピュータ上の <strong>Obsidian保管庫（Vault）</strong>
+            に直接保存されます。このデータの所有権と管理権は完全にお客様にあります。</p>
+
+        <h2>5. お問い合わせ</h2>
+        <p>本ポリシーに関するご質問は、以下までお問い合わせください。</p>
+        <p class="contact-placeholder">[CONTACT_EMAIL] <!-- ここをご自身のメールアドレスに書き換えてください --></p>
+    </div>
+
+</body>
+
+</html>
