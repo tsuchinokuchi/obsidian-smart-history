@@ -117,9 +117,25 @@ export class ObsidianClient {
         const day = String(now.getDate()).padStart(2, '0');
         const fileName = `${year}-${month}-${day}.md`;
 
-        // Remove trailing slash if present
-        const folder = dailyPath.replace(/\/$/, '');
-        const fullPath = `${folder}/${fileName}`;
+        // Define dynamic values
+        const decade = Math.floor(year / 10) * 10 + 's';
+
+        let folderPath = dailyPath;
+
+        // Check for placeholders in the setting
+        if (folderPath.includes('{')) {
+            // User has defined a custom dynamic path (e.g. "Journal/{YYYY}/{MM}")
+            folderPath = folderPath
+                .replace(/{YYYY}/g, year)
+                .replace(/{MM}/g, month)
+                .replace(/{DD}/g, day)
+                .replace(/{DECADE}/g, decade);
+        } else {
+            // No placeholders: Use the exact path as configured by the user
+            folderPath = folderPath.replace(/\/$/, '');
+        }
+
+        const fullPath = `${folderPath}/${fileName}`;
 
         return this.appendToNote(fullPath, content);
     }
