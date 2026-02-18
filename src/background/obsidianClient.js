@@ -105,38 +105,53 @@ export class ObsidianClient {
         }
     }
 
-    async appendToDailyNote(content) {
+    async readNote(path) {
         await this.init();
-        // Use static import
+        try {
+            const encodedPath = path.split('/').map(encodeURIComponent).join('/');
+            const response = await fetch(`${this.baseUrl}/vault/${encodedPath}`, {
+                method: 'GET',
+                headers: this.headers
+            });
+
+            if (response.ok) {
+                return await response.text();
+            } else {
+                return null; // File likely doesn't exist
+            }
+        } catch (e) {
+            console.error("readNote failed:", e);
+            return null;
+        }
+    }
+
+    async getDailyNotePath() {
         const settings = await getSettings();
         const dailyPath = settings[StorageKeys.OBSIDIAN_DAILY_PATH] || 'Daily';
-
         const now = new Date();
         const year = now.getFullYear();
         const month = String(now.getMonth() + 1).padStart(2, '0');
         const day = String(now.getDate()).padStart(2, '0');
         const fileName = `${year}-${month}-${day}.md`;
-
-        // Define dynamic values
         const decade = Math.floor(year / 10) * 10 + 's';
 
         let folderPath = dailyPath;
-
-        // Check for placeholders in the setting
         if (folderPath.includes('{')) {
-            // User has defined a custom dynamic path (e.g. "Journal/{YYYY}/{MM}")
             folderPath = folderPath
                 .replace(/{YYYY}/g, year)
                 .replace(/{MM}/g, month)
                 .replace(/{DD}/g, day)
                 .replace(/{DECADE}/g, decade);
         } else {
-            // No placeholders: Use the exact path as configured by the user
             folderPath = folderPath.replace(/\/$/, '');
         }
 
-        const fullPath = `${folderPath}/${fileName}`;
+        return `${folderPath}/${fileName}`;
+    }
 
+    async appendToDailyNote(content) {
+        await this.init();
+        const fullPath = await this.getDailyNotePath();
         return this.appendToNote(fullPath, content);
     }
 
@@ -145,21 +160,70 @@ export class ObsidianClient {
         await this.init();
 
         const timestamp = new Date().toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' });
-        let formatted = '';
 
-        if (isNewContext) {
-            // New Page/Context: Add Header
-            formatted += `\n## [${title}](${url})\n`;
+        // Determine target path
+        let targetPath = path;
+        if (!targetPath) {
+            targetPath = await this.getDailyNotePath();
         }
 
-        // Bullet point memo
-        formatted += `- ${timestamp} ${memoContent}\n`;
+        // 1. Try to read the file content
+        const existingContent = await this.readNote(targetPath);
 
-        // Use appendToNote logic if path exists, otherwise default to Daily Note
-        if (path) {
-            return this.appendToNote(path, formatted);
+        if (existingContent === null) {
+            // File doesn't exist, create new with header
+            const newContent = `## [${title}](${url})\n- ${timestamp} ${memoContent}\n`;
+            return this.createNote(targetPath, newContent);
+        }
+
+        // 2. File exists, look for existing header logic
+        // We look for: "## [Title](URL)"
+        // Note: Title might change, so maybe just look for (URL)? 
+        // But markdown links are [Text](URL). 
+        // Let's search for the exact URL in a header link format.
+        // We need to be careful about regex escaping.
+
+        // Simpler approach: Check if `](${url})` exists in a header line.
+        const headerSignature = `](${url})`;
+        const lines = existingContent.split('\n');
+        let foundIndex = -1;
+
+        for (let i = 0; i < lines.length; i++) {
+            const line = lines[i];
+            if (line.startsWith('##') && line.includes(headerSignature)) {
+                foundIndex = i;
+                break;
+            }
+        }
+
+        if (foundIndex !== -1) {
+            // Found existing section!
+            console.log(`Found existing section for ${url} at line ${foundIndex}`);
+
+            // Find where to insert: end of this section (before next header or end of file)
+            let insertIndex = lines.length;
+            for (let i = foundIndex + 1; i < lines.length; i++) {
+                if (lines[i].startsWith('#')) {
+                    insertIndex = i; // Insert before next header
+                    break;
+                }
+            }
+
+            // Insert at insertIndex
+            const newLine = `- ${timestamp} ${memoContent}`;
+            lines.splice(insertIndex, 0, newLine);
+
+            // Reconstruct content
+            const newFileContent = lines.join('\n');
+
+            // Overwrite file
+            // Note: We use createNote (PUT) to overwrite
+            return this.createNote(targetPath, newFileContent);
+
         } else {
-            return this.appendToDailyNote(formatted);
+            // No existing section, append to end
+            const appendContent = `\n## [${title}](${url})\n- ${timestamp} ${memoContent}\n`;
+            return this.appendToNote(targetPath, appendContent);
         }
     }
 
