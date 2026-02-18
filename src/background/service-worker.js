@@ -111,8 +111,14 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         const apiKey = settings[StorageKeys.GEMINI_API_KEY];
         const modelName = settings[StorageKeys.GEMINI_MODEL] || 'gemini-2.5-flash';
         const focusMode = settings[StorageKeys.FOCUS_MODE];
+        const focusModeAiEnabled = settings[StorageKeys.FOCUS_MODE_AI_ENABLED];
         const targetNote = settings[StorageKeys.TARGET_NOTE];
         const summaryLength = settings[StorageKeys.SUMMARY_LENGTH] || 'short';
+
+        if (focusMode && !focusModeAiEnabled) {
+          console.log("Focus Mode ON, AI Summary OFF. Skipping auto-save.");
+          return;
+        }
 
         let summary = "Summary not available.";
         if (apiKey && message.payload.content) {

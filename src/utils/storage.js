@@ -15,7 +15,8 @@ export const StorageKeys = {
     FOCUS_MODE: 'focus_mode',
     TARGET_NOTE: 'target_note',
     DEFAULT_FOLDER: 'default_folder',
-    SUMMARY_LENGTH: 'summary_length'
+    SUMMARY_LENGTH: 'summary_length',
+    FOCUS_MODE_AI_ENABLED: 'focus_mode_ai_enabled'
 };
 
 const DEFAULT_SETTINGS = {
@@ -26,6 +27,7 @@ const DEFAULT_SETTINGS = {
     [StorageKeys.GEMINI_MODEL]: 'gemini-1.5-pro',
     [StorageKeys.OBSIDIAN_DAILY_PATH]: '092.Daily', // Default folder path
     [StorageKeys.SUMMARY_LENGTH]: 'short',
+    [StorageKeys.FOCUS_MODE_AI_ENABLED]: false, // Default to OFF for Focus Mode
 };
 
 export async function getSettings() {

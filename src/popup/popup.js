@@ -63,7 +63,13 @@ async function restoreSettings() {
     setVal('minVisitDuration', settings[StorageKeys.MIN_VISIT_DURATION] || 5);
     setVal('minScrollDepth', settings[StorageKeys.MIN_SCROLL_DEPTH] || 50);
     setVal('defaultFolder', settings[StorageKeys.DEFAULT_FOLDER] || '');
+    setVal('defaultFolder', settings[StorageKeys.DEFAULT_FOLDER] || '');
     setVal('summaryLength', settings[StorageKeys.SUMMARY_LENGTH] || 'short');
+
+    const focusAiCheckbox = document.getElementById('focus-ai-enabled');
+    if (focusAiCheckbox) {
+        focusAiCheckbox.checked = settings[StorageKeys.FOCUS_MODE_AI_ENABLED] || false;
+    }
 }
 
 async function updateUI() {
@@ -281,9 +287,11 @@ async function handleCreateNew() {
 }
 
 async function startSession(targetPath) {
+    const aiEnabled = document.getElementById('focus-ai-enabled').checked;
     await saveSettings({
         [StorageKeys.FOCUS_MODE]: true,
-        [StorageKeys.TARGET_NOTE]: targetPath
+        [StorageKeys.TARGET_NOTE]: targetPath,
+        [StorageKeys.FOCUS_MODE_AI_ENABLED]: aiEnabled
     });
 
     // Notify background to update badge
