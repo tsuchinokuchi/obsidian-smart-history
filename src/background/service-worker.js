@@ -120,13 +120,18 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
           return;
         }
 
-        let summary = "Summary not available.";
-        if (apiKey && message.payload.content) {
-          console.log(`Generating AI Summary using ${modelName} (${summaryLength})...`);
-          summary = await gemini.generateSummary(message.payload.content, apiKey, modelName, summaryLength);
-        } else if (!apiKey) {
-          console.warn("Gemini API Key is missing in settings.");
-          summary = "No Gemini API Key configured.";
+        let summary = "AI要約不可"; // Default concise message
+        try {
+          if (apiKey && message.payload.content) {
+            console.log(`Generating AI Summary using ${modelName} (${summaryLength})...`);
+            summary = await gemini.generateSummary(message.payload.content, apiKey, modelName, summaryLength);
+          } else if (!apiKey) {
+            console.warn("Gemini API Key is missing in settings.");
+            summary = "APIキー未設定";
+          }
+        } catch (summError) {
+          console.error("AI Summary generation failed:", summError);
+          summary = "AI要約エラー";
         }
 
         // Sanitize summary to prevent breaking markdown list

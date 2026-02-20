@@ -55,7 +55,7 @@ export class GeminiClient {
 
         } catch (error) {
             console.error("Gemini Request Failed:", error);
-            return `Error generating summary: ${error.message}`;
+            throw error;
         }
     }
 }
